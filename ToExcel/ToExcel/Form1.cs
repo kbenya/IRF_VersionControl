@@ -19,24 +19,8 @@ namespace ToExcel
         Excel.Application xlApp;
         Excel.Workbook xlWB;
         Excel.Worksheet xlSheet;
-        public Form1()
-        {
-            InitializeComponent();
-            LoadData();
 
-
-
-            CreateExcel();
-        }
-
-        private void LoadData()
-        {
-            Flats = context.Flats.ToList();
-        }
-
-        private void CreateTable()
-        {
-            string[] headers = new string[] {
+        string[] headers = new string[] {
                  "Kód",
                  "Eladó",
                  "Oldal",
@@ -46,6 +30,22 @@ namespace ToExcel
                  "Alapterület (m2)",
                  "Ár (mFt)",
                  "Négyzetméter ár (Ft/m2)"};
+        public Form1()
+        {
+            InitializeComponent();
+            LoadData();
+
+            CreateExcel();
+            
+        }
+
+        private void LoadData()
+        {
+            Flats = context.Flats.ToList();
+        }
+
+        private void CreateTable()
+        {
 
             for (int i = 0; i < 9; i++)
             {
@@ -73,7 +73,7 @@ namespace ToExcel
                 values[counter, 5] = f.NumberOfRooms;
                 values[counter, 6] = f.FloorArea;
                 values[counter, 7] = f.Price;
-                values[counter, 8] = "=" + GetCell(counter + 2, 7).ToString() + "/" + GetCell(counter + 2, 6).ToString();
+                values[counter, 8] = "=" + GetCell(counter + 2, 8).ToString() + "*1000000/" + GetCell(counter + 2, 7).ToString();
                 counter++;
             }
 
@@ -109,6 +109,7 @@ namespace ToExcel
                 xlSheet = xlWB.ActiveSheet;
 
                 CreateTable();
+                FormatTable();
 
                 xlApp.Visible = true;
                 xlApp.UserControl = true;
@@ -124,5 +125,36 @@ namespace ToExcel
                 xlApp = null;
             }
         }
+        private void FormatTable()
+        {
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            Excel.Range tableRange = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, headers.Length));
+            Excel.Range firstColRange = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, 1));
+            Excel.Range lastColRange = xlSheet.get_Range(GetCell(1, headers.Length), GetCell(lastRowID, headers.Length));
+
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            firstColRange.Font.Bold = true;
+            firstColRange.Interior.Color = Color.LightYellow;
+
+            lastColRange.Interior.Color = Color.LightGreen;
+            lastColRange.NumberFormat = ".00";
+
+
+
+
+
+        }
+        
     }
 }
