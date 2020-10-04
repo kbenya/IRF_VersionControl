@@ -47,6 +47,11 @@ namespace ToExcel
                  "Ár (mFt)",
                  "Négyzetméter ár (Ft/m2)"};
 
+            for (int i = 0; i < 9; i++)
+            {
+                xlSheet.Cells[1, i+1] = headers[i];
+            }
+
             object[,] values = new object[Flats.Count, headers.Length];
 
             int counter = 0;
