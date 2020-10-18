@@ -22,14 +22,7 @@ namespace Webszolgaltatas_MNB
         {
             InitializeComponent();
 
-            string result = CallWebservice();
-
-            XMLProcess(result);
-
-            MakeChart();
-
-            dataGridView1.DataSource = Rates;
-
+            RefreshData();
             
         }
 
@@ -39,9 +32,9 @@ namespace Webszolgaltatas_MNB
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = CurrencycomboBox.SelectedIndex.ToString(),
+                startDate = StartdateTimePicker.Value.ToString(),
+                endDate = EnddateTimePicker.Value.ToString()
             };
 
             var response = mnbService.GetExchangeRates(request);
@@ -92,5 +85,32 @@ namespace Webszolgaltatas_MNB
             chartArea.AxisY.IsStartedFromZero = false;
         }
 
+        public void RefreshData()
+        {
+            Rates.Clear();
+
+            string result = CallWebservice();
+
+            XMLProcess(result);
+
+            MakeChart();
+
+            dataGridView1.DataSource = Rates;
+        }
+
+        private void StartdateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void EnddateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void CurrencycomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
     }
 }

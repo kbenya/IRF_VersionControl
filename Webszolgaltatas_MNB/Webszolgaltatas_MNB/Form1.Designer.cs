@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.chartRateData = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.StartdateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.EnddateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.CurrencycomboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartRateData)).BeginInit();
             this.SuspendLayout();
@@ -40,7 +43,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(40, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(40, 65);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
@@ -49,25 +52,58 @@
             // 
             // chartRateData
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartRateData.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartRateData.Legends.Add(legend2);
-            this.chartRateData.Location = new System.Drawing.Point(549, 12);
+            chartArea7.Name = "ChartArea1";
+            this.chartRateData.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chartRateData.Legends.Add(legend7);
+            this.chartRateData.Location = new System.Drawing.Point(549, 65);
             this.chartRateData.Name = "chartRateData";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chartRateData.Series.Add(series2);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chartRateData.Series.Add(series7);
             this.chartRateData.Size = new System.Drawing.Size(555, 519);
             this.chartRateData.TabIndex = 1;
             this.chartRateData.Text = "chart1";
+            // 
+            // StartdateTimePicker
+            // 
+            this.StartdateTimePicker.Checked = false;
+            this.StartdateTimePicker.Location = new System.Drawing.Point(40, 21);
+            this.StartdateTimePicker.Name = "StartdateTimePicker";
+            this.StartdateTimePicker.Size = new System.Drawing.Size(270, 26);
+            this.StartdateTimePicker.TabIndex = 2;
+            this.StartdateTimePicker.ValueChanged += new System.EventHandler(this.StartdateTimePicker_ValueChanged);
+            // 
+            // EnddateTimePicker
+            // 
+            this.EnddateTimePicker.Checked = false;
+            this.EnddateTimePicker.Location = new System.Drawing.Point(335, 21);
+            this.EnddateTimePicker.Name = "EnddateTimePicker";
+            this.EnddateTimePicker.Size = new System.Drawing.Size(270, 26);
+            this.EnddateTimePicker.TabIndex = 3;
+            this.EnddateTimePicker.ValueChanged += new System.EventHandler(this.EnddateTimePicker_ValueChanged);
+            // 
+            // CurrencycomboBox
+            // 
+            this.CurrencycomboBox.FormattingEnabled = true;
+            this.CurrencycomboBox.Items.AddRange(new object[] {
+            "EUR"});
+            this.CurrencycomboBox.Location = new System.Drawing.Point(629, 19);
+            this.CurrencycomboBox.Name = "CurrencycomboBox";
+            this.CurrencycomboBox.Size = new System.Drawing.Size(121, 28);
+            this.CurrencycomboBox.TabIndex = 4;
+            this.CurrencycomboBox.Text = "EUR";
+            this.CurrencycomboBox.SelectedIndexChanged += new System.EventHandler(this.CurrencycomboBox_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1116, 561);
+            this.ClientSize = new System.Drawing.Size(1116, 596);
+            this.Controls.Add(this.CurrencycomboBox);
+            this.Controls.Add(this.EnddateTimePicker);
+            this.Controls.Add(this.StartdateTimePicker);
             this.Controls.Add(this.chartRateData);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
@@ -82,6 +118,9 @@
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRateData;
+        private System.Windows.Forms.DateTimePicker StartdateTimePicker;
+        private System.Windows.Forms.DateTimePicker EnddateTimePicker;
+        private System.Windows.Forms.ComboBox CurrencycomboBox;
     }
 }
 
