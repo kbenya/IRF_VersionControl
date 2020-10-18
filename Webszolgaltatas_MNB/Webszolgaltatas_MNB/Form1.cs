@@ -22,7 +22,7 @@ namespace Webszolgaltatas_MNB
         public Form1()
         {
             InitializeComponent();
-            //GetCurrencies();
+            GetCurrencies();
             RefreshData();
 
             CurrencycomboBox.DataSource = Currencies;
@@ -130,31 +130,25 @@ namespace Webszolgaltatas_MNB
 
             var cur_response = mnbService.GetCurrencies(cur_request);
 
-            // Ebben az esetben a "var" a GetExchangeRatesResult property alapján kapja a típusát.
-            // Ezért a result változó valójában string típusú.
             var cur_result = cur_response.GetCurrenciesResult;
 
+            MessageBox.Show(cur_result);
 
             var xml = new XmlDocument();
             xml.LoadXml(cur_result);
 
             foreach (XmlElement element in xml.DocumentElement)
             {
-                var rate = new RateData();
-                Rates.Add(rate);
+                foreach (XmlElement curr in element)
+                {
+                    string cur_rate;
+                    cur_rate = curr.InnerText;
+                    Currencies.Add(cur_rate);
+                }
 
-                rate.Date = DateTime.Parse(element.GetAttribute("date"));
-
-                var childElement = (XmlElement)element.ChildNodes[0];
-                if (childElement == null)
-                    continue;
-                rate.Currency = childElement.GetAttribute("curr");
-
-                var unit = decimal.Parse(childElement.GetAttribute("unit"));
-                var value = decimal.Parse(childElement.InnerText);
-                if (unit != 0)
-                    rate.Value = value / unit;
             }
+
+
         }
     }
 }
