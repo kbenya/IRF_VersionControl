@@ -18,11 +18,14 @@ namespace Webszolgaltatas_MNB
     {
 
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
-
+            //GetCurrencies();
             RefreshData();
+
+            CurrencycomboBox.DataSource = Currencies;
             
         }
 
@@ -35,6 +38,7 @@ namespace Webszolgaltatas_MNB
                 currencyNames = CurrencycomboBox.SelectedIndex.ToString(),
                 startDate = StartdateTimePicker.Value.ToString(),
                 endDate = EnddateTimePicker.Value.ToString()
+
             };
 
             var response = mnbService.GetExchangeRates(request);
@@ -57,6 +61,8 @@ namespace Webszolgaltatas_MNB
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
                 rate.Currency = childElement.GetAttribute("curr");
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
@@ -111,6 +117,44 @@ namespace Webszolgaltatas_MNB
         private void CurrencycomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshData();
+        }
+
+        public void GetCurrencies()
+        {
+            var mnbService = new MNBArfolyamServiceSoapClient();
+
+            var cur_request = new GetCurrenciesRequestBody()
+            {
+                
+            };
+
+            var cur_response = mnbService.GetCurrencies(cur_request);
+
+            // Ebben az esetben a "var" a GetExchangeRatesResult property alapján kapja a típusát.
+            // Ezért a result változó valójában string típusú.
+            var cur_result = cur_response.GetCurrenciesResult;
+
+
+            var xml = new XmlDocument();
+            xml.LoadXml(cur_result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                var rate = new RateData();
+                Rates.Add(rate);
+
+                rate.Date = DateTime.Parse(element.GetAttribute("date"));
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
+                rate.Currency = childElement.GetAttribute("curr");
+
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                var value = decimal.Parse(childElement.InnerText);
+                if (unit != 0)
+                    rate.Value = value / unit;
+            }
         }
     }
 }
