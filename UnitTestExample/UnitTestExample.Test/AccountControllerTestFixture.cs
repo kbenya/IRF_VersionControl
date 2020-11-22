@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,10 +52,10 @@ namespace UnitTestExample.Test
         }
 
         [
-    Test,
-    TestCase("pelda@gmail.com", "Abcd1234"),
-    TestCase("pelda2@gmail.com", "Abcd12345"),
-]
+            Test,
+            TestCase("pelda@gmail.com", "Abcd1234"),
+            TestCase("pelda2@gmail.com", "Abcd12345"),
+        ]
         public void TestRegisterHappyPath(string email, string password)
         {
             // Arrange
@@ -67,6 +68,34 @@ namespace UnitTestExample.Test
             Assert.AreEqual(email, actualResult.Email);
             Assert.AreEqual(password, actualResult.Password);
             Assert.AreNotEqual(Guid.Empty, actualResult.ID);
+        }
+
+        [
+        Test,
+        TestCase("password", "Abcd1234"),
+        TestCase("pelda@gmail", "Abcd1234"),
+        TestCase("peldagmail.com", "abcd1234"),
+        TestCase("pelda@gmail.com", "ABCD1234"),
+        TestCase("pelda@gmail.com", "abcdABCD"),
+        TestCase("pelda@gmail.com", "Ab1234"),
+        ]
+        public void TestRegisterValidateException(string email, string password)
+        {
+            // Arrange
+            var accountController = new AccountController();
+
+            // Act
+            try
+            {
+                var actualResult = accountController.Register(email, password);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOf<ValidationException>(ex);
+            }
+
+            // Assert
         }
 
     }
